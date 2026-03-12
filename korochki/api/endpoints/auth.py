@@ -6,7 +6,7 @@ from typing import Annotated
 from datetime import datetime
 
 from korochki.db.database import get_session
-from korochki.api.schemas.user import UserCreate
+from korochki.api.schemas.user import UserCreate, UserResponse
 from korochki.db.models import User
 from korochki.core.security import hash_password, validate_password, create_jwt_token, get_current_user
 

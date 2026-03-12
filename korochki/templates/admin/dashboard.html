@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора - Корочки.есть</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #dc3545;
+        }
+        .nav a.active {
+            background-color: #dc3545;
+        }
+        .main-content {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border: 1px solid #c3e6cb;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border: 1px solid #f5c6cb;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .filters {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .btn-filter {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            align-self: flex-end;
+            transition: background-color 0.3s;
+        }
+        .btn-filter:hover {
+            background-color: #c82333;
+        }
+        .applications-table {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #dc3545;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .status-new {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .status-in-progress {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .status-completed {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .status-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 150px;
+        }
+        .btn-update {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.3s;
+        }
+        .btn-update:hover {
+            background-color: #218838;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .pagination a {
+            padding: 10px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .pagination a:hover {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .pagination a.active {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .review-text {
+            max-width: 200px;
+            font-size: 13px;
+            color: #555;
+            font-style: italic;
+        }
+        .no-applications {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        .user-info-cell strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+        .user-info-cell small {
+            color: #666;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">Корочки.есть (Админ-панель)</div>
+            <div class="nav">
+                <a href="/my-applications">Мои заявки</a>
+                <a href="/new-application">Новая заявка</a>
+                <a href="/admin/dashboard" class="active">Панель администратора</a>
+                <a href="#" onclick="logout()">Выход</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1>Управление заявками на обучение</h1>
+        
+        <div id="alert"></div>
+        
+        <div class="stats" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Всего заявок</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statNew">0</div>
+                <div class="stat-label">Новых</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statInProgress">0</div>
+                <div class="stat-label">В процессе</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statCompleted">0</div>
+                <div class="stat-label">Завершено</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="status-filter">Фильтр по статусу</label>
+                <select id="status-filter" onchange="filterByStatus(this.value)">
+                    <option value="all">Все статусы</option>
+                    <option value="Новая">Новые</option>
+                    <option value="Идет обучение">В процессе</option>
+                    <option value="Обучение завершено">Завершенные</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="search">Поиск по ФИО или курсу</label>
+                <input type="text" id="search" placeholder="Введите текст для поиска..." onkeyup="searchTable(this.value)">
+            </div>
+            <button class="btn-filter" onclick="resetFilters()">Сбросить фильтры</button>
+        </div>
+
+        <div id="applicationsContainer">
+            <p style="text-align: center; color: #666;">Загрузка заявок...</p>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        let applications = [];
+        let filteredApplications = [];
+        let currentPage = 1;
+        const rowsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            await loadApplications(token);
+        });
+
+        async function loadApplications(token) {
+            try {
+                const response = await fetch('/api/admin/applications', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 403) {
+                    showAlert('Доступ запрещён. Требуется роль администратора.', 'error');
+                    setTimeout(() => {
+                        window.location.href = '/my-applications';
+                    }, 2000);
+                    return;
+                }
+
+                if (response.ok) {
+                    applications = await response.json();
+                    filteredApplications = [...applications];
+                    updateStats();
+                    renderApplications();
+                    setupPagination();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.detail || 'Ошибка загрузки заявок', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showAlert('Ошибка подключения к серверу', 'error');
+            }
+        }
+
+        function updateStats() {
+            const total = applications.length;
+            const newCount = applications.filter(app => app.status === 'Новая').length;
+            const inProgress = applications.filter(app => app.status === 'Идет обучение').length;
+            const completed = applications.filter(app => app.status === 'Обучение завершено').length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statNew').textContent = newCount;
+            document.getElementById('statInProgress').textContent = inProgress;
+            document.getElementById('statCompleted').textContent = completed;
+        }
+
+        function renderApplications() {
+            const container = document.getElementById('applicationsContainer');
+
+            if (filteredApplications.length === 0) {
+                container.innerHTML = `
+                    <div class="no-applications">
+                        <p>В системе пока нет ни одной заявки</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageData = filteredApplications.slice(start, end);
+
+            let html = `
+                <div class="applications-table">
+                    <table id="applications-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Пользователь</th>
+                                <th>Курс</th>
+                                <th>Дата начала</th>
+                                <th>Способ оплаты</th>
+                                <th>Статус</th>
+                                <th>Дата подачи</th>
+                                <th>Отзыв</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            pageData.forEach(app => {
+                const statusClass = getStatusClass(app.status);
+                const dateCreated = new Date(app.created_at).toLocaleDateString('ru-RU', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const startDate = new Date(app.desired_start_date).toLocaleDateString('ru-RU');
+
+                html += `
+                    <tr data-status="${escapeHtml(app.status)}">
+                        <td>#${app.id}</td>
+                        <td class="user-info-cell">
+                            <strong>${escapeHtml(app.user_full_name || app.user_name)}</strong>
+                            <small>${escapeHtml(app.user_login || '')}</small>
+                            <small>${escapeHtml(app.user_email || '')}</small>
+                        </td>
+                        <td>${escapeHtml(app.course_name)}</td>
+                        <td>${startDate}</td>
+                        <td>${app.payment_method_name || app.payment_method_id}</td>
+                        <td>
+                            <span class="status ${statusClass}">
+                                ${escapeHtml(app.status)}
+                            </span>
+                        </td>
+                        <td>${dateCreated}</td>
+                        <td class="review-text">
+                            ${app.review ? escapeHtml(app.review) : '-'}
+                        </td>
+                        <td>
+                            <form class="status-form" onsubmit="updateStatus(event, ${app.id})">
+                                <input type="hidden" name="application_id" value="${app.id}">
+                                <select name="status" class="status-select">
+                                    <option value="Новая" ${app.status === 'Новая' ? 'selected' : ''}>Новая</option>
+                                    <option value="Идет обучение" ${app.status === 'Идет обучение' ? 'selected' : ''}>Идет обучение</option>
+                                    <option value="Обучение завершено" ${app.status === 'Обучение завершено' ? 'selected' : ''}>Обучение завершено</option>
+                                </select>
+                                <button type="submit" class="btn-update">Обновить</button>
+                            </form>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Новая': return 'status-new';
+                case 'Идет обучение': return 'status-in-progress';
+                case 'Обучение завершено': return 'status-completed';
+                default: return '';
+            }
+        }
+
+        function setupPagination() {
+            const pagination = document.getElementById('pagination');
+            const pageCount = Math.ceil(filteredApplications.length / rowsPerPage);
+            
+            if (pageCount <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            for (let i = 1; i <= pageCount; i++) {
+                html += `<a href="#" onclick="goToPage(${i}); return false;" class="${i === currentPage ? 'active' : ''}">${i}</a>`;
+            }
+            pagination.innerHTML = html;
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            renderApplications();
+            setupPagination();
+        }
+
+        function filterByStatus(status) {
+            if (status === 'all') {
+                filteredApplications = [...applications];
+            } else {
+                filteredApplications = applications.filter(app => app.status === status);
+            }
+            currentPage = 1;
+            renderApplications();
+            setupPagination();
+        }
+
+        function searchTable(searchText) {
+            searchText = searchText.toLowerCase().trim();
+            
+            filteredApplications = applications.filter(app => {
+                const userName = (app.user_full_name || '').toLowerCase();
+                const courseName = (app.course_name || '').toLowerCase();
+                
+                return userName.includes(searchText) || courseName.includes(searchText);
+            });
+            
+            currentPage = 1;
+            renderApplications();
+            setupPagination();
+        }
+
+        function resetFilters() {
+            document.getElementById('status-filter').value = 'all';
+            document.getElementById('search').value = '';
+            filteredApplications = [...applications];
+            currentPage = 1;
+            renderApplications();
+            setupPagination();
+        }
+
+        async function updateStatus(event, appId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const status = form.querySelector('.status-select').value;
+            const token = localStorage.getItem('access_token');
+
+            try {
+                const response = await fetch(`/api/admin/applications/${appId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                if (response.ok) {
+                    showAlert(`Статус заявки #${appId} успешно изменен на "${status}"`, 'success');
+                    await loadApplications(token);
+                } else {
+                    const data = await response.json();
+                    showAlert(data.detail || 'Ошибка при обновлении статуса', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showAlert('Ошибка подключения к серверу', 'error');
+            }
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.className = type === 'success' ? 'success-message' : 'error-message';
+            alert.textContent = message;
+            alert.style.display = 'block';
+
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            window.location.href = '/login';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

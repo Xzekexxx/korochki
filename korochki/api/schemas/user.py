@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
-from datetime import datetime, date
+from datetime import datetime
 from typing import Optional
 import re
 
@@ -39,43 +39,5 @@ class UserResponse(BaseModel):
     phone: str
     email: str
     role: str = "user"
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class PaymentMethodCreate(BaseModel):
-    name: str = Field(min_length=1, max_length=100)
-
-
-class PaymentMethodResponse(BaseModel):
-    id: int
-    name: str
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class ApplicationCreate(BaseModel):
-    course_name: str = Field(min_length=1, max_length=200)
-    desired_start_date: date
-    payment_method_id: int
-
-
-class ApplicationUpdate(BaseModel):
-    course_name: Optional[str] = Field(None, min_length=1, max_length=200)
-    desired_start_date: Optional[date] = None
-    payment_method_id: Optional[int] = None
-    status: Optional[str] = None
-    review: Optional[str] = None
-
-
-class ApplicationResponse(BaseModel):
-    id: int
-    user_id: int
-    course_name: str
-    desired_start_date: date
-    payment_method_id: int
-    status: str
-    created_at: datetime
-    review: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)

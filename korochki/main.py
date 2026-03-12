@@ -8,7 +8,7 @@ from sqlalchemy import select
 from korochki.db.base import Base
 from korochki.db.database import engine, get_session
 from korochki.db.models import User, PaymentMethod, Application
-from korochki.api.endpoints import auth, applications, payment_methods
+from korochki.api.endpoints import auth, applications, payment_methods, admin
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -23,27 +23,50 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(applications.router)
 app.include_router(payment_methods.router)
+app.include_router(admin.router)
 
 templates = Jinja2Templates(directory="korochki/templates")
 
 
 @app.get("/")
 async def index(request: Request):
+
     return templates.TemplateResponse("login.html", {"request": request})
 
 
 @app.get("/register")
 async def register_page(request: Request):
+
     return templates.TemplateResponse("registr.html", {"request": request})
 
 
 @app.get("/login")
 async def login_page(request: Request):
+
     return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.get("/my-applications")
+async def my_applications_page(request: Request):
+
+    return templates.TemplateResponse("my_applications.html", {"request": request})
+
+
+@app.get("/new-application")
+async def new_application_page(request: Request):
+
+    return templates.TemplateResponse("new_application.html", {"request": request})
+
+
+@app.get("/admin/dashboard")
+async def admin_dashboard_page(request: Request):
+
+    return templates.TemplateResponse("admin/dashboard.html", {"request": request})
 
 
 @app.get("/test-db")
 async def test_connect(request: Request, db: Annotated[AsyncSession, Depends(get_session)]):
+
     await db.execute(select(1))
     db_connected = True
 
