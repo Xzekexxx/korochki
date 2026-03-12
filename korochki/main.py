@@ -1,7 +1,6 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
-from fastapi.requests import Request
 from typing import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -9,6 +8,7 @@ from sqlalchemy import select
 from korochki.db.base import Base
 from korochki.db.database import engine, get_session
 from korochki.db.models import User, PaymentMethod, Application
+from korochki.api.endpoints import auth, applications, payment_methods
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,11 +20,31 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+app.include_router(auth.router)
+app.include_router(applications.router)
+app.include_router(payment_methods.router)
+
 templates = Jinja2Templates(directory="korochki/templates")
 
+
 @app.get("/")
+async def index(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.get("/register")
+async def register_page(request: Request):
+    return templates.TemplateResponse("registr.html", {"request": request})
+
+
+@app.get("/login")
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.get("/test-db")
 async def test_connect(request: Request, db: Annotated[AsyncSession, Depends(get_session)]):
-    db.execute("SELECT 1")
+    await db.execute(select(1))
     db_connected = True
 
     users = (await db.execute(select(User))).scalars().all()
