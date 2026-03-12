@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест подключения к БД «Корочки»</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 { color: #333; }
+        .success { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        .error { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .info {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест подключения к базе данных «Корочки»</h1>
+
+    {% if db_connected %}
+        <div class="success">
+            <strong>Успех:</strong> подключение к базе данных установлено!
+        </div>
+    {% else %}
+        <div class="error">
+            <strong>Ошибка:</strong> подключение к базе данных не удалось.
+        </div>
+    {% endif %}
+
+    {% if users %}
+        <p><strong>Найдено пользователей:</strong> {{ users|length }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Логин</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Email</th>
+                    <th>Роль</th>
+                    <th>Дата регистрации</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.login }}</td>
+                    <td>{{ u.full_name }}</td>
+                    <td>{{ u.phone }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.role }}</td>
+                    <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') if u.created_at else '—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Таблица `users` пуста или не доступна.</p>
+    {% endif %}
+
+    <div class="info">
+        <h2>Информация о подключении:</h2>
+        <ul>
+            <li><strong>Хост:</strong> localhost</li>
+            <li><strong>Порт:</strong> 5432</li>
+            <li><strong>База данных:</strong> korochki_portal</li>
+            <li><strong>Пользователь:</strong> postgres</li>
+        </ul>
+    </div>
+</body>
+</html>
