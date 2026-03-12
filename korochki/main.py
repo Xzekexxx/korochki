@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from typing import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,13 +26,15 @@ app.include_router(applications.router)
 app.include_router(payment_methods.router)
 app.include_router(admin.router)
 
+app.mount("/static", StaticFiles(directory="korochki/static"), name="static")
+
 templates = Jinja2Templates(directory="korochki/templates")
 
 
 @app.get("/")
 async def index(request: Request):
 
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/register")

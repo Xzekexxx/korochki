@@ -45,15 +45,22 @@ async def register_user(user_data: UserCreate, db: AsyncSessionDep):
 @router.post("/login")
 async def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: AsyncSessionDep):
 
+    
     result = await db.execute(select(User).where(User.login == form_data.username))
     user = result.scalar_one_or_none()
     
-
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неверный логин или пароль",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
     if user.role == "admin":
-
+        
         password_valid = form_data.password == "KorokNET"
     else:
-
+       
         password_valid = validate_password(form_data.password, user.password)
 
     if not password_valid:

@@ -3,324 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель администратора - Корочки.есть</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            min-height: 100vh;
-        }
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #dc3545;
-        }
-        .nav {
-            display: flex;
-            gap: 20px;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .nav a:hover {
-            background-color: #dc3545;
-        }
-        .nav a.active {
-            background-color: #dc3545;
-        }
-        .main-content {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 25px;
-            border: 1px solid #c3e6cb;
-        }
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 25px;
-            border: 1px solid #f5c6cb;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
-        }
-        .stat-label {
-            color: #666;
-            margin-top: 5px;
-        }
-        .filters {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        .filter-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .filter-group select,
-        .filter-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .btn-filter {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            align-self: flex-end;
-            transition: background-color 0.3s;
-        }
-        .btn-filter:hover {
-            background-color: #c82333;
-        }
-        .applications-table {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            background-color: #dc3545;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-        }
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-        }
-        .status-new {
-            background-color: #ffc107;
-            color: #333;
-        }
-        .status-in-progress {
-            background-color: #17a2b8;
-            color: white;
-        }
-        .status-completed {
-            background-color: #28a745;
-            color: white;
-        }
-        .status-form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .status-select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            flex: 1;
-            min-width: 150px;
-        }
-        .btn-update {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background-color 0.3s;
-        }
-        .btn-update:hover {
-            background-color: #218838;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        .pagination a {
-            padding: 10px 15px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #333;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-        .pagination a:hover {
-            background-color: #dc3545;
-            color: white;
-            border-color: #dc3545;
-        }
-        .pagination a.active {
-            background-color: #dc3545;
-            color: white;
-            border-color: #dc3545;
-        }
-        .review-text {
-            max-width: 200px;
-            font-size: 13px;
-            color: #555;
-            font-style: italic;
-        }
-        .no-applications {
-            text-align: center;
-            padding: 40px;
-            background-color: white;
-            border-radius: 10px;
-        }
-        .user-info-cell strong {
-            display: block;
-            margin-bottom: 3px;
-        }
-        .user-info-cell small {
-            color: #666;
-            display: block;
-        }
-    </style>
+    <title>Админ-панель - Корочки.есть</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">Корочки.есть (Админ-панель)</div>
-            <div class="nav">
-                <a href="/my-applications">Мои заявки</a>
-                <a href="/new-application">Новая заявка</a>
-                <a href="/admin/dashboard" class="active">Панель администратора</a>
-                <a href="#" onclick="logout()">Выход</a>
+    <header class="header" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-graduation-cap"></i> Корочки.<span>есть</span> <span style="color: #ffd700;">(Админ)</span>
+                </a>
+                <nav class="nav-menu">
+                    <a href="/my-applications"><i class="fas fa-list"></i> Мои заявки</a>
+                    <a href="/new-application"><i class="fas fa-plus-circle"></i> Новая заявка</a>
+                    <a href="/admin/dashboard" class="active"><i class="fas fa-cog"></i> Админ-панель</a>
+                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выход</a>
+                </nav>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="main-content">
-        <h1>Управление заявками на обучение</h1>
-        
-        <div id="alert"></div>
-        
-        <div class="stats" id="statsContainer">
-            <div class="stat-card">
-                <div class="stat-value" id="statTotal">0</div>
-                <div class="stat-label">Всего заявок</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statNew">0</div>
-                <div class="stat-label">Новых</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statInProgress">0</div>
-                <div class="stat-label">В процессе</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statCompleted">0</div>
-                <div class="stat-label">Завершено</div>
+    <main class="main-content">
+        <div class="container">
+            <div class="card mt-4">
+                <h1 class="mb-4"><i class="fas fa-tachometer-alt"></i> Панель администратора</h1>
+
+                <div id="alert"></div>
+
+                <div class="stats" id="statsContainer">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Всего заявок</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statNew">0</div>
+                        <div class="stat-label">Новых</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statInProgress">0</div>
+                        <div class="stat-label">В процессе</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCompleted">0</div>
+                        <div class="stat-label">Завершено</div>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="status-filter"><i class="fas fa-filter"></i> Фильтр по статусу</label>
+                        <select id="status-filter" onchange="filterByStatus(this.value)">
+                            <option value="all">Все статусы</option>
+                            <option value="Новая">Новые</option>
+                            <option value="Идет обучение">В процессе</option>
+                            <option value="Обучение завершено">Завершенные</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="search"><i class="fas fa-search"></i> Поиск по ФИО или курсу</label>
+                        <input type="text" id="search" placeholder="Введите текст для поиска..." onkeyup="searchTable(this.value)">
+                    </div>
+                    <button class="btn-filter" onclick="resetFilters()">
+                        <i class="fas fa-undo"></i> Сбросить
+                    </button>
+                </div>
+
+                <div id="applicationsContainer">
+                    <p style="text-align: center; color: #666;">Загрузка заявок...</p>
+                </div>
+
+                <div class="pagination" id="pagination"></div>
             </div>
         </div>
+    </main>
 
-        <div class="filters">
-            <div class="filter-group">
-                <label for="status-filter">Фильтр по статусу</label>
-                <select id="status-filter" onchange="filterByStatus(this.value)">
-                    <option value="all">Все статусы</option>
-                    <option value="Новая">Новые</option>
-                    <option value="Идет обучение">В процессе</option>
-                    <option value="Обучение завершено">Завершенные</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="search">Поиск по ФИО или курсу</label>
-                <input type="text" id="search" placeholder="Введите текст для поиска..." onkeyup="searchTable(this.value)">
-            </div>
-            <button class="btn-filter" onclick="resetFilters()">Сбросить фильтры</button>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Портал "Корочки.есть". Все права защищены.</p>
         </div>
+    </footer>
 
-        <div id="applicationsContainer">
-            <p style="text-align: center; color: #666;">Загрузка заявок...</p>
-        </div>
-
-        <div class="pagination" id="pagination"></div>
-    </div>
-
+    <script src="/static/js/notifications.js"></script>
     <script>
         let applications = [];
         let filteredApplications = [];
@@ -333,7 +97,6 @@
                 window.location.href = '/login';
                 return;
             }
-
             await loadApplications(token);
         });
 
@@ -360,11 +123,9 @@
                     renderApplications();
                     setupPagination();
                 } else {
-                    const data = await response.json();
-                    showAlert(data.detail || 'Ошибка загрузки заявок', 'error');
+                    showAlert('Ошибка загрузки заявок', 'error');
                 }
             } catch (error) {
-                console.error('Ошибка:', error);
                 showAlert('Ошибка подключения к серверу', 'error');
             }
         }
@@ -386,8 +147,8 @@
 
             if (filteredApplications.length === 0) {
                 container.innerHTML = `
-                    <div class="no-applications">
-                        <p>В системе пока нет ни одной заявки</p>
+                    <div class="text-center" style="padding: 40px;">
+                        <p style="color: #666;">В системе пока нет ни одной заявки</p>
                     </div>
                 `;
                 return;
@@ -398,8 +159,8 @@
             const pageData = filteredApplications.slice(start, end);
 
             let html = `
-                <div class="applications-table">
-                    <table id="applications-table">
+                <div class="table-responsive">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -419,62 +180,52 @@
             pageData.forEach(app => {
                 const statusClass = getStatusClass(app.status);
                 const dateCreated = new Date(app.created_at).toLocaleDateString('ru-RU', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+                    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
                 });
                 const startDate = new Date(app.desired_start_date).toLocaleDateString('ru-RU');
 
                 html += `
                     <tr data-status="${escapeHtml(app.status)}">
                         <td>#${app.id}</td>
-                        <td class="user-info-cell">
-                            <strong>${escapeHtml(app.user_full_name || app.user_name)}</strong>
-                            <small>${escapeHtml(app.user_login || '')}</small>
-                            <small>${escapeHtml(app.user_email || '')}</small>
+                        <td>
+                            <strong>${escapeHtml(app.user_full_name || app.user_name)}</strong><br>
+                            <small style="color: #666;">${escapeHtml(app.user_login || '')}</small><br>
+                            <small style="color: #666;">${escapeHtml(app.user_email || '')}</small>
                         </td>
                         <td>${escapeHtml(app.course_name)}</td>
                         <td>${startDate}</td>
                         <td>${app.payment_method_name || app.payment_method_id}</td>
                         <td>
-                            <span class="status ${statusClass}">
+                            <span class="status-badge ${statusClass}">
                                 ${escapeHtml(app.status)}
                             </span>
                         </td>
                         <td>${dateCreated}</td>
-                        <td class="review-text">
-                            ${app.review ? escapeHtml(app.review) : '-'}
-                        </td>
+                        <td>${app.review ? '<i class="fas fa-comment" title="' + escapeHtml(app.review) + '"></i>' : '-'}</td>
                         <td>
-                            <form class="status-form" onsubmit="updateStatus(event, ${app.id})">
-                                <input type="hidden" name="application_id" value="${app.id}">
-                                <select name="status" class="status-select">
+                            <form class="d-flex gap-2" onsubmit="updateStatus(event, ${app.id})">
+                                <select name="status" class="form-control" style="width: 180px; padding: 8px;">
                                     <option value="Новая" ${app.status === 'Новая' ? 'selected' : ''}>Новая</option>
                                     <option value="Идет обучение" ${app.status === 'Идет обучение' ? 'selected' : ''}>Идет обучение</option>
                                     <option value="Обучение завершено" ${app.status === 'Обучение завершено' ? 'selected' : ''}>Обучение завершено</option>
                                 </select>
-                                <button type="submit" class="btn-update">Обновить</button>
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fas fa-save"></i>
+                                </button>
                             </form>
                         </td>
                     </tr>
                 `;
             });
 
-            html += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
+            html += `</tbody></table></div>`;
             container.innerHTML = html;
         }
 
         function getStatusClass(status) {
             switch (status) {
                 case 'Новая': return 'status-new';
-                case 'Идет обучение': return 'status-in-progress';
+                case 'Идет обучение': return 'status-progress';
                 case 'Обучение завершено': return 'status-completed';
                 default: return '';
             }
@@ -515,14 +266,11 @@
 
         function searchTable(searchText) {
             searchText = searchText.toLowerCase().trim();
-            
             filteredApplications = applications.filter(app => {
                 const userName = (app.user_full_name || '').toLowerCase();
                 const courseName = (app.course_name || '').toLowerCase();
-                
                 return userName.includes(searchText) || courseName.includes(searchText);
             });
-            
             currentPage = 1;
             renderApplications();
             setupPagination();
@@ -539,9 +287,8 @@
 
         async function updateStatus(event, appId) {
             event.preventDefault();
-            
             const form = event.target;
-            const status = form.querySelector('.status-select').value;
+            const status = form.querySelector('select').value;
             const token = localStorage.getItem('access_token');
 
             try {
@@ -562,20 +309,14 @@
                     showAlert(data.detail || 'Ошибка при обновлении статуса', 'error');
                 }
             } catch (error) {
-                console.error('Ошибка:', error);
                 showAlert('Ошибка подключения к серверу', 'error');
             }
         }
 
         function showAlert(message, type) {
-            const alert = document.getElementById('alert');
-            alert.className = type === 'success' ? 'success-message' : 'error-message';
-            alert.textContent = message;
-            alert.style.display = 'block';
-
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 3000);
+            if (window.notifications) {
+                window.notifications[type](message);
+            }
         }
 
         function logout() {

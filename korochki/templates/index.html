@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Корочки.есть</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-graduation-cap"></i> Корочки.<span>есть</span>
+                </a>
+                <nav class="nav-menu">
+                    <a href="/" class="active"><i class="fas fa-home"></i> Главная</a>
+                    <a href="/login"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                    <a href="/register"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div id="main-slider" class="slider-container">
+                <div class="slider">
+
+                    <div class="slide">
+                        <img src="/static/images/slide1.jpg" alt="Курсы программирования">
+                        <div class="slide-content">
+                            <h3>Программирование с нуля</h3>
+                            <p>Освойте востребованные языки программирования</p>
+                        </div>
+                    </div>
+     
+                    <div class="slide">
+                        <img src="/static/images/slide2.png" alt="Дизайн и верстка">
+                        <div class="slide-content">
+                            <h3>Веб-дизайн и разработка</h3>
+                            <p>Создавайте современные сайты и приложения</p>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="/static/images/slide3.png" alt="Английский для IT">
+                        <div class="slide-content">
+                            <h3>Английский для IT</h3>
+                            <p>Специализированные курсы английского языка</p>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <img src="/static/images/slide4.jpeg" alt="Бизнес-аналитика">
+                        <div class="slide-content">
+                            <h3>Бизнес-аналитика</h3>
+                            <p>Анализ данных и принятие решений</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+
+                <div class="slider-dots"></div>
+            </div>
+
+            <div class="features mt-5">
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #667eea;">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Актуальные курсы</h3>
+                    <p>Программы разработаны с учетом требований современного рынка труда</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #667eea;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Гибкий график</h3>
+                    <p>Обучайтесь в удобное время, совмещая с работой или учебой</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #667eea;">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Сертификаты</h3>
+                    <p>Получите официальный сертификат о прохождении курса</p>
+                </div>
+            </div>
+
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">О платформе "Корочки.есть"</h2>
+                    <p class="text-center">
+                        Добро пожаловать на образовательную платформу дополнительного профессионального 
+                        образования "Корочки.есть"! Мы предлагаем широкий выбор курсов для повышения 
+                        квалификации и освоения новых профессий.
+                    </p>
+                    <div class="text-center mt-4">
+                        <a href="/register" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Начать обучение
+                        </a>
+                        <a href="/login" class="btn btn-success" style="margin-left: 10px;">
+                            <i class="fas fa-sign-in-alt"></i> Войти в систему
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Портал "Корочки.есть". Все права защищены.</p>
+            <p>Образовательная платформа для профессионального развития</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/slider.js"></script>
+    <script src="/static/js/notifications.js"></script>
+</body>
+</html>
